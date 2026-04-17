@@ -1,5 +1,45 @@
 # Ontology Schema Changelog
 
+## 1.0.0 (package) / primitives surface — 2026-04-17
+
+### Breaking Change Signal
+Major package version bump (0.2.1 → 1.0.0) signals a new canonical primitive surface.
+Zero actual breaking changes: all existing types.ts and semantics.ts interfaces are
+preserved for backward compatibility. Consumer projects may continue importing from
+existing subpaths without modification.
+
+### Added (9 new primitive files under primitives/)
+- **`primitives/struct.ts`** (prim-data-05) — StructRid + StructDeclaration + StructRegistry singleton. Reusable named record type (Palantir Struct analog) embedded inside ObjectType properties.
+- **`primitives/value-type.ts`** (prim-data-06) — ValueTypeRid + ValueTypeDeclaration + ValueTypeRegistry + BaseScalarType union (`string`|`number`|`integer`|`boolean`|`date`). Scalar constraint type wrapping base primitives with semantic validation.
+- **`primitives/shared-property-type.ts`** (prim-data-07) — SharedPropertyTypeRid + SharedPropertyTypeDeclaration + SharedPropertyTypeRegistry. Promoted from inline interface in types.ts; enables cross-object property group reuse (e.g. AuditFields).
+- **`primitives/capability-token.ts`** (prim-security-02) — CapabilityTokenRid + CapabilityTokenDeclaration + CapabilityTokenRegistry. L2 RBAC token with holder, scope, issuedAt, expiresAt, signature.
+- **`primitives/marking-declaration.ts`** (prim-security-03) — MarkingRid + MarkingDeclaration + MarkingDeclarationRegistry. Cell/column classification with SensitivityLevel (`public`|`internal`|`confidential`|`restricted`) and applicableFieldPaths.
+- **`primitives/automation-declaration.ts`** (prim-action-03) — AutomationRid + AutomationDeclaration + AutomationDeclarationRegistry. Cron/trigger scheduled action metadata (schedule, actionTypeRid, enabled).
+- **`primitives/webhook-declaration.ts`** (prim-action-04) — WebhookRid + WebhookDeclaration + WebhookDeclarationRegistry. External ingress event descriptor (endpoint, authHeader, payloadSchema, eventTypeFilter).
+- **`primitives/scenario-sandbox.ts`** (prim-learn-03) — ScenarioRid + ScenarioSandboxDeclaration + ScenarioSandboxRegistry. Isolated what-if analysis context (scenarioId, parentSessionId, isolation: full|shared-read, createdAt, metadata).
+- **`primitives/aip-logic-function.ts`** (prim-logic-03) — AIPLogicFunctionRid + AIPLogicFunctionDeclaration + AIPLogicFunctionRegistry. LLM-backed function (modelRef, promptTemplate, outputSchema, deterministic: false).
+
+### Added (event registry expansion)
+- **`lineage/event-types.ts`** — EVENT_TYPE_REGISTRY expanded from 10 to 16 variants. New events: `ontology_registered`, `capability_token_issued`, `schema_locked`, `scenario_created`, `pr_body_generated`, `session_complete`.
+
+### Deprecation Notes
+The following inline interfaces in `types.ts` are superseded by the new primitive files and should be migrated in W3+:
+- `SharedPropertyType` → `primitives/shared-property-type.ts:SharedPropertyTypeDeclaration`
+- `StructType` → `primitives/struct.ts:StructDeclaration`
+
+Types.ts interfaces are preserved read-only (managed-settings deny rules lock them) and will remain for backcompat through at least v1.x.
+
+### Per-Axis Version Matrix (v1.0.0)
+| Axis | Version | Source |
+|------|---------|--------|
+| ontology | 1.12.0 | ontology/CHANGELOG.md (no bump — additive primitives live outside types.ts) |
+| interaction | 0.1.2 | interaction/types.ts |
+| meta | 0.1.0 | meta/types.ts |
+| rendering | 0.1.0 | rendering/types.ts |
+| **root package** | **1.0.0** | **package.json + CHANGELOG.md** |
+
+---
+
 ## 1.12.0 — 2026-04-10
 
 ### Added (typed BackPropagation / Workflow Lineage upgrade)

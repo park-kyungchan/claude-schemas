@@ -8,6 +8,45 @@ Root-level aggregator. Each axis has its own CHANGELOG:
 
 ---
 
+## [1.0.0] — 2026-04-17
+
+### Major Version Signal
+v1.0.0 introduces the canonical primitive surface under `ontology/primitives/`. This is
+a major version bump to signal a stable, enumerable primitive API for consumer projects
+and the home shared-core layer (W3). Zero actual breaking changes — all v0.2.x exports
+are preserved. Existing consumer peerDependency pins at `0.2.1` continue to work until
+explicitly migrated to `1.0.0` in W5.
+
+### Added
+- **9 new primitive files** under `ontology/primitives/`:
+  - `struct.ts` (DATA) — StructRid + StructDeclaration + StructRegistry
+  - `value-type.ts` (DATA) — ValueTypeRid + ValueTypeDeclaration + ValueTypeRegistry + BaseScalarType
+  - `shared-property-type.ts` (DATA) — SharedPropertyTypeRid + SharedPropertyTypeDeclaration + SharedPropertyTypeRegistry
+  - `capability-token.ts` (SECURITY L2) — CapabilityTokenRid + CapabilityTokenDeclaration + CapabilityTokenRegistry
+  - `marking-declaration.ts` (SECURITY L2/L3) — MarkingRid + MarkingDeclaration + MarkingDeclarationRegistry
+  - `automation-declaration.ts` (ACTION) — AutomationRid + AutomationDeclaration + AutomationDeclarationRegistry
+  - `webhook-declaration.ts` (ACTION) — WebhookRid + WebhookDeclaration + WebhookDeclarationRegistry
+  - `scenario-sandbox.ts` (LEARN) — ScenarioRid + ScenarioSandboxDeclaration + ScenarioSandboxRegistry
+  - `aip-logic-function.ts` (LOGIC) — AIPLogicFunctionRid + AIPLogicFunctionDeclaration + AIPLogicFunctionRegistry
+- **EVENT_TYPE_REGISTRY expanded 10→16** in `ontology/lineage/event-types.ts`:
+  `ontology_registered`, `capability_token_issued`, `schema_locked`, `scenario_created`, `pr_body_generated`, `session_complete`
+- **New primitive subpath exports** in `package.json` — 9 new `./ontology/primitives/*` export entries
+- **Root `index.ts`** re-exports all 9 new primitives under the `Ontology` namespace
+- **`breaking-changes`** note in `package.json` clarifying the major version signal
+
+### Per-Axis Delta (v0.2.1 → v1.0.0)
+| Axis | v0.2.1 | v1.0.0 | Delta |
+|------|--------|--------|-------|
+| ontology/types.ts | 1.12.0 | 1.12.0 (unchanged) | primitives/ surface added separately |
+| ontology/primitives/ | 5 files | 14 files | +9 new files |
+| ontology/lineage/event-types | 10 events | 16 events | +6 events |
+| interaction | 0.1.2 | 0.1.2 | unchanged |
+| meta | 0.1.0 | 0.1.0 | unchanged |
+| rendering | 0.1.0 | 0.1.0 | unchanged |
+| root package | 0.2.1 | 1.0.0 | major bump |
+
+---
+
 ## [0.2.1] — 2026-04-17
 
 ### Added

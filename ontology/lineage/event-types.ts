@@ -20,6 +20,12 @@ export const EVENT_TYPE_NAMES = [
   "drift_detected",
   "session_started",
   "session_ended",
+  "ontology_registered",
+  "capability_token_issued",
+  "schema_locked",
+  "scenario_created",
+  "pr_body_generated",
+  "session_complete",
 ] as const;
 
 export type EventTypeName = typeof EVENT_TYPE_NAMES[number];
@@ -80,6 +86,36 @@ export const EVENT_TYPE_REGISTRY: Readonly<Record<EventTypeName, EventTypeDeclar
   session_ended: {
     name: "session_ended",
     description: "A Claude session ended (clear / logout / compact / other).",
+    primaryDomain: "learn",
+  },
+  ontology_registered: {
+    name: "ontology_registered",
+    description: "A new primitive or ontology declaration was registered via pm-ontology-register.",
+    primaryDomain: "action",
+  },
+  capability_token_issued: {
+    name: "capability_token_issued",
+    description: "A CapabilityToken was issued to a holder for a scoped set of operations.",
+    primaryDomain: "security",
+  },
+  schema_locked: {
+    name: "schema_locked",
+    description: "The schema surface was locked for a release; no further structural edits permitted until unlock.",
+    primaryDomain: "action",
+  },
+  scenario_created: {
+    name: "scenario_created",
+    description: "A ScenarioSandbox was spawned for isolated what-if analysis.",
+    primaryDomain: "learn",
+  },
+  pr_body_generated: {
+    name: "pr_body_generated",
+    description: "A pull request body was generated from events.jsonl lineage by the /ship skill.",
+    primaryDomain: "action",
+  },
+  session_complete: {
+    name: "session_complete",
+    description: "A session was formally completed via /ship; emitted after PR merge or explicit completion signal.",
     primaryDomain: "learn",
   },
 });
