@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "@palantirKC/claude-schemas",
+  "version": "0.2.0",
+  "generatedAt": "2026-04-17T00:00:00Z",
+  "description": "Machine-readable axis + version registry. Consumers (palantir-mini, projects) read this to validate schema pin compatibility.",
+
+  "axes": {
+    "ontology": {
+      "version": "1.12.0",
+      "entry": "ontology/types.ts",
+      "semantics": "ontology/semantics.ts",
+      "validator": "ontology/project-validator.ts",
+      "audit": "ontology/semantic-audit.ts",
+      "codegen": "ontology/codegen/index.ts",
+      "changelog": "ontology/CHANGELOG.md",
+      "primitives": [
+        "ontology/primitives/object-type.ts",
+        "ontology/primitives/link-type.ts",
+        "ontology/primitives/action-type.ts",
+        "ontology/primitives/property-type.ts",
+        "ontology/primitives/interface-type.ts"
+      ],
+      "lineage": [
+        "ontology/lineage/event-types.ts",
+        "ontology/lineage/decision-lineage.ts"
+      ],
+      "functions": [
+        "ontology/functions/function-signature.ts",
+        "ontology/functions/derived-property.ts",
+        "ontology/functions/reducer.ts"
+      ],
+      "policies": [
+        "ontology/policies/rbac.ts",
+        "ontology/policies/submission-criteria.ts",
+        "ontology/policies/propagation.ts"
+      ]
+    },
+
+    "interaction": {
+      "version": "0.1.2",
+      "entry": "interaction/index.ts",
+      "types": "interaction/types.ts",
+      "semantics": "interaction/semantics.ts",
+      "validator": "interaction/validator.ts",
+      "browse": "interaction/BROWSE.md",
+      "index": "interaction/INDEX.md",
+      "subdomains": [
+        "interaction/binding/schema.ts",
+        "interaction/component/schema.ts",
+        "interaction/element/schema.ts",
+        "interaction/gesture/schema.ts"
+      ]
+    },
+
+    "meta": {
+      "version": "0.1.0",
+      "entry": "meta/index.ts",
+      "types": "meta/types.ts"
+    },
+
+    "rendering": {
+      "version": "0.1.0",
+      "entry": "rendering/index.ts",
+      "types": "rendering/types.ts",
+      "semantics": "rendering/semantics.ts",
+      "browse": "rendering/BROWSE.md",
+      "index": "rendering/INDEX.md",
+      "subdomains": [
+        "rendering/materials/schema.ts",
+        "rendering/pipeline/schema.ts",
+        "rendering/scene/schema.ts",
+        "rendering/performance/schema.ts"
+      ]
+    }
+  },
+
+  "compatibleConsumers": {
+    "palantir-mini": ">=0.1.0",
+    "kosmos": ">=0.1.0",
+    "palantir-math": ">=0.1.0",
+    "mathcrew": ">=0.1.0"
+  },
+
+  "authorityChain": [
+    "research/",
+    "schemas/",
+    "project ontology/",
+    "contracts",
+    "runtime",
+    "audits"
+  ]
+}

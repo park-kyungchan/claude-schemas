@@ -1,0 +1,37 @@
+{
+  "name": "@palantirKC/claude-schemas",
+  "version": "0.2.0",
+  "description": "Shared meta-schemas for ontology-first Claude Code projects. Four axes: ontology, interaction, meta, rendering. Consumed by palantir-mini plugin and downstream projects (kosmos, palantir-math, mathcrew).",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./ontology": "./ontology/types.ts",
+    "./ontology/semantics": "./ontology/semantics.ts",
+    "./ontology/validator": "./ontology/project-validator.ts",
+    "./ontology/audit": "./ontology/semantic-audit.ts",
+    "./ontology/codegen": "./ontology/codegen/index.ts",
+    "./interaction": "./interaction/index.ts",
+    "./meta": "./meta/index.ts",
+    "./rendering": "./rendering/index.ts",
+    "./manifest": "./.manifest.json"
+  },
+  "engines": {
+    "bun": ">=1.2",
+    "typescript": ">=5.0"
+  },
+  "keywords": [
+    "claude-schemas",
+    "ontology-first",
+    "palantir-mini",
+    "osdk-mirror",
+    "meta-framework",
+    "type-safety"
+  ],
+  "author": "palantirKC",
+  "compatibleConsumers": {
+    "palantir-mini": ">=0.1.0",
+    "kosmos": ">=0.1.0",
+    "palantir-math": ">=0.1.0",
+    "mathcrew": ">=0.1.0"
+  }
+}
