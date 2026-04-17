@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "@palantirKC/claude-schemas",
-  "version": "0.2.0",
-  "generatedAt": "2026-04-17T00:00:00Z",
+  "version": "0.2.1",
+  "generatedAt": "2026-04-17T05:00:00Z",
   "description": "Machine-readable axis + version registry. Consumers (palantir-mini, projects) read this to validate schema pin compatibility.",
 
   "axes": {
