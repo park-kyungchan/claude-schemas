@@ -8,6 +8,23 @@ Root-level aggregator. Each axis has its own CHANGELOG:
 
 ---
 
+## [0.2.1] — 2026-04-17
+
+### Added
+
+- **Extended `exports` map** in `package.json` — explicit subpath exports for `./ontology/types`, `./rendering/types`, `./interaction/types`, `./meta/types`, and semantics/helpers entrypoints. Lets consumer projects import from either the axis shortcut (`@palantirKC/claude-schemas/ontology`) or the explicit types path (`@palantirKC/claude-schemas/ontology/types`) without needing to restructure existing import sites.
+- **Root `index.ts`** — namespaced re-exports (`Ontology`, `Rendering`, `Interaction`, `Meta`) for consumers that want a single import surface.
+- **Public `README.md`** — consumer pin reference, OSDK-style distribution rationale, install instructions.
+- **`repository` field** in `package.json` pointing at the GitHub repo.
+- Dropped `"private": true` — the schemas repo (`park-kyungchan/claude-schemas`) is the public distribution channel consumed via git-URL peerDeps.
+
+### Notes
+
+- v0.2.1 is purely additive. Zero changes to type definitions, semantics, validators, or codegen.
+- Consumer projects (kosmos, palantir-math, mathcrew) bumped their peerDep pin from `v0.2.0` → `v0.2.1` in the same rollout to gain the extended exports.
+
+---
+
 ## [0.2.0] — 2026-04-17
 
 ### Added (Universalization additive metadata layer)
