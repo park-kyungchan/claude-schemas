@@ -1,18 +1,26 @@
 {
   "name": "@palantirKC/claude-schemas",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Shared meta-schemas for ontology-first Claude Code projects. Four axes: ontology, interaction, meta, rendering. Consumed by palantir-mini plugin and downstream projects (kosmos, palantir-math, mathcrew).",
-  "private": true,
+  "private": false,
   "type": "module",
   "exports": {
+    ".": "./index.ts",
     "./ontology": "./ontology/types.ts",
+    "./ontology/types": "./ontology/types.ts",
     "./ontology/semantics": "./ontology/semantics.ts",
     "./ontology/validator": "./ontology/project-validator.ts",
     "./ontology/audit": "./ontology/semantic-audit.ts",
     "./ontology/codegen": "./ontology/codegen/index.ts",
+    "./ontology/helpers": "./ontology/helpers.ts",
     "./interaction": "./interaction/index.ts",
+    "./interaction/types": "./interaction/types.ts",
+    "./interaction/semantics": "./interaction/semantics.ts",
     "./meta": "./meta/index.ts",
+    "./meta/types": "./meta/types.ts",
     "./rendering": "./rendering/index.ts",
+    "./rendering/types": "./rendering/types.ts",
+    "./rendering/semantics": "./rendering/semantics.ts",
     "./manifest": "./.manifest.json"
   },
   "engines": {
@@ -28,6 +36,11 @@
     "type-safety"
   ],
   "author": "palantirKC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/park-kyungchan/claude-schemas.git"
+  },
+  "license": "UNLICENSED",
   "compatibleConsumers": {
     "palantir-mini": ">=0.1.0",
     "kosmos": ">=0.1.0",
