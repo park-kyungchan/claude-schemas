@@ -1,5 +1,61 @@
 # Ontology Schema Changelog
 
+## 1.15.0 (package) / primitives surface — 2026-04-20
+
+### Added — PedagogyContract primitive + feedback_loop_closed event split
+
+2 new primitive files under `ontology/primitives/`:
+- `pedagogy-contract.ts` (LEARN, `prim-learn-12`) — Composable pedagogy plug-in framework. Declares `PedagogyContract` + `PedagogyApplication` + `PedagogyParams` discriminated union (cpa / productive-failure / constructionism / variation-theory) + `CognitiveLoadConstraint` meta-audit shape + `PEDAGOGY_CONTRACT_REGISTRY`. Promoted from mathcrew project-local `ontology/pedagogy.ts`; mathcrew's project-local becomes a thin re-export in Sprint 2 P1.
+- `feedback-loop-closed.ts` (DATA, `prim-data-09`) — Declares `FeedbackLoopClosedPayload` for the terminal-state transition event. Self-contained schema (inlines TerminationCondition shape) so consumers outside the plugin can import payload type without cross-file dependencies.
+
+EVENT_TYPE_REGISTRY expanded 35 → 36:
+- `feedback_loop_closed` (LOGIC) — replaces the v1.14 overloaded `feedback_loop_opened` with `payload.transition: "close"` pattern identified as ontology smell in H3 D4.
+
+Deprecation: `FeedbackLoopOpenedEnvelope.payload.transition | verdict | terminationCondition` optional fields retained for one MINOR cycle (removed in v1.16). During v1.15, consumers accept BOTH variants.
+
+Authority: research/palantir-vision/synthesis/2026-04-20-mathcrew-redesign-research.md §Topic 2 + research/claude-code/harness-h3-retrospective.md §D4.
+
+### Per-Axis Version Matrix (v1.15.0)
+| Axis | Version | Source |
+|------|---------|--------|
+| ontology/types.ts | 1.12.0 (unchanged) | primitives surface extended separately |
+| ontology/primitives/ | 28 files (+2) | pedagogy-contract + feedback-loop-closed added |
+| ontology/lineage/event-types | 36 events (+1) | feedback_loop_closed |
+| interaction | 0.1.2 | unchanged |
+| meta | 0.1.0 | unchanged |
+| rendering | 0.1.0 | unchanged |
+| **root package** | **1.15.0** | **MINOR bump (additive)** |
+
+---
+
+## 1.14.0 (package) / primitives surface — 2026-04-20
+
+### Added — 5 harness primitives + 6 lifecycle events
+5 new primitive files under `ontology/primitives/`:
+- `harness-agent.ts` (LEARN, `prim-learn-11`) — 8-role taxonomy (planner/generator/evaluator/orchestrator + 4 grader specializations) with phase binding, model anchor, tools allowlist, output contract, maxTurns. Binds agent .md semantics to typed primitive.
+- `sprint-contract.ts` (ACTION, `prim-action-05`) — File-based Generator↔Evaluator agreement; status state machine (drafting/negotiating/bound/aborted); hard-threshold policy (per-criterion floors + overall ceiling); disagreement resolution enum.
+- `feedback-loop.ts` (LOGIC, `prim-logic-04`) — 7-state iteration tracker (negotiating→generating→evaluating→feedback→passed/failed/aborted) binding a Generator+Evaluator pair to a SprintContract. Monotonic feedback artifact paths.
+- `grading-criterion.ts` (DATA, `prim-data-08`) — AIP Evals 5-evaluator taxonomy (code/rule/model/human/hybrid), 9-domain applicability scope, pass/fail logic with 4 combinator types, hybrid sub-criteria composition. Rubric = ordered Set<Criterion> with sum(weight)=1.0.
+- `playwright-scenario.ts` (LEARN, `prim-learn-04`) — 17-kind browser step taxonomy, evidence capture spec (screenshots/network/console/video/a11y/DOM), MCP binding enum (Playwright | Claude-in-Chrome).
+
+EVENT_TYPE_REGISTRY expanded 29→35:
+- `harness_agent_spawned`, `sprint_contract_negotiated`, `sprint_contract_bound`, `feedback_loop_opened`, `playwright_scenario_executed`, `grading_completed`
+
+Authority: Prithvi Rajasekaran's Anthropic Labs harness + Palantir AIP Evals 5-evaluator + Claude Code Lead Protocol v2.
+
+### Per-Axis Version Matrix (v1.14.0)
+| Axis | Version | Source |
+|------|---------|--------|
+| ontology/types.ts | 1.12.0 (unchanged) | primitives surface extended separately |
+| ontology/primitives/ | 26 files (+5) | harness primitives added |
+| ontology/lineage/event-types | 35 events (+6) | harness lifecycle |
+| interaction | 0.1.2 | unchanged |
+| meta | 0.1.0 | unchanged |
+| rendering | 0.1.0 | unchanged |
+| **root package** | **1.14.0** | **MINOR bump (additive)** |
+
+---
+
 ## 1.0.0 (package) / primitives surface — 2026-04-17
 
 ### Breaking Change Signal

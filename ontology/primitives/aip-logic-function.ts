@@ -12,6 +12,8 @@
  *
  * D/L/A domain: LOGIC (LLM-backed function enables reasoning over ontology data;
  * not a stored fact, not a direct mutation — produces derived reasoning outputs)
+  * @owner palantirkc-ontology
+ * @purpose @stable — AIPLogicFunction primitive (prim-logic-03, v1.0)
  */
 
 export type AIPLogicFunctionRid = string & { readonly __brand: "AIPLogicFunctionRid" };

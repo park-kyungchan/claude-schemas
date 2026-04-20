@@ -8,6 +8,8 @@
  * Pattern: declare an interface with expected properties; ObjectTypes that
  * implement it inherit the contract. This is the TypeScript way — no
  * runtime reflection needed.
+  * @owner palantirkc-ontology
+ * @purpose InterfaceType primitive (prim-logic-02)
  */
 
 export type InterfaceTypeRid = string & { readonly __brand: "InterfaceTypeRid" };

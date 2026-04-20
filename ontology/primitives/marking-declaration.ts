@@ -11,6 +11,8 @@
  *
  * D/L/A domain: SECURITY L2/L3 (cell/column classification; governs data
  * visibility, not a stored data fact or logic derivation)
+  * @owner palantirkc-ontology
+ * @purpose @stable — MarkingDeclaration primitive (prim-security-03, v1.0)
  */
 
 export type MarkingRid = string & { readonly __brand: "MarkingRid" };

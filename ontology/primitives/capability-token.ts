@@ -12,6 +12,8 @@
  *
  * D/L/A domain: SECURITY L2 (capability-based access control token; not a stored
  * data fact, not a logic derivation — governs who may perform which actions)
+  * @owner palantirkc-ontology
+ * @purpose @stable — CapabilityToken primitive (prim-security-02, v1.0)
  */
 
 export type CapabilityTokenRid = string & { readonly __brand: "CapabilityTokenRid" };

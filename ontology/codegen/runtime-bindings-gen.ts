@@ -6,6 +6,8 @@
  *
  * ForwardPropagation:
  *   ontology/runtime.ts (SSoT) → src/lib/runtimeBindings.generated.ts
+  * @owner palantirkc-ontology
+ * @purpose Ontology → Runtime Bindings Generator
  */
 
 import type { RuntimeOntology } from "../types";

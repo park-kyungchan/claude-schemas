@@ -29,12 +29,10 @@ If you need structure, provenance, or change discipline instead, open `INDEX.md`
 | How should a project consume this package? | `project-test.test.ts` |
 | What changed recently? | `CHANGELOG.md` |
 
-## palantir-mini Primitives (v0)
+## palantir-mini Primitives (v1.13.1)
 
 Typed executable contracts consumed by the `palantir-mini` plugin
-(`~/.claude/plugins/palantir-mini/`). Derived from the kosmos TechBlueprint
-(park-kyungchan/kosmos@767fa10) — 7-agent research pipeline, R1–R15 gates,
-H-A append-only event log won 0/2000 lost vs H-B 484/2000 (24.2%).
+(`~/.claude/plugins/palantir-mini/`).
 
 | Question | Read These Files |
 |----------|------------------|

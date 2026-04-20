@@ -11,6 +11,8 @@
  *   filter   → .withIndex("by_{fk}").eq(fk, args.fk).first()  or .collect()
  *   list     → .order("desc").take(100)
  *   search   → .withSearchIndex(...).search(...)
+  * @owner palantirkc-ontology
+ * @purpose Ontology → Convex Queries Generator
  */
 
 import type { OntologyData, OntologyLogic, OntologyQuery, ObjectType } from "../types";

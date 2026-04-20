@@ -12,6 +12,8 @@
  *
  * D/L/A domain: LEARN (sandbox enables evaluation of hypothetical states; the
  * scenario itself is a LEARN artifact tracking what-if outcomes)
+  * @owner palantirkc-ontology
+ * @purpose @stable — ScenarioSandbox primitive (prim-learn-03, v1.0)
  */
 
 export type ScenarioRid = string & { readonly __brand: "ScenarioRid" };

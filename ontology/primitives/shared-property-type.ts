@@ -11,6 +11,8 @@
  *
  * D/L/A domain: DATA (cross-object property reuse pattern; stored fact about
  * the data model shape, not a derivation or mutation)
+  * @owner palantirkc-ontology
+ * @purpose @stable — SharedPropertyType primitive (prim-data-07, v1.0)
  */
 
 export type SharedPropertyTypeRid = string & { readonly __brand: "SharedPropertyTypeRid" };

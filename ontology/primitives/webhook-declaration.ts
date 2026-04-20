@@ -11,6 +11,8 @@
  *
  * D/L/A domain: ACTION (webhooks drive external ingress mutations; the declaration
  * is a stored fact about external action surfaces)
+  * @owner palantirkc-ontology
+ * @purpose @stable — WebhookDeclaration primitive (prim-action-04, v1.0)
  */
 
 export type WebhookRid = string & { readonly __brand: "WebhookRid" };

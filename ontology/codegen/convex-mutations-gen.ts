@@ -10,6 +10,8 @@
  *
  * ForwardPropagation:
  *   ontology/action.ts (SSoT) → convex/mutations.ts (stub scaffold)
+  * @owner palantirkc-ontology
+ * @purpose Ontology → Convex Mutations Stub Generator
  */
 
 import type {
@@ -19,7 +21,7 @@ import type {
   ObjectType,
   Parameter,
 } from "../types";
-import { deriveTableName, mapBaseType } from "./type-mapping";
+import { deriveTableName } from "./type-mapping";
 
 interface MutationStub {
   exportName: string;
@@ -87,6 +89,21 @@ function buildHandler(
 
   // Role enforcement
   lines.push(`    requireRole(ctx, ${role});`);
+  lines.push("");
+
+  // OSDK 2.0: mutually-exclusive options guard
+  lines.push(`    if (args.$validateOnly === true && args.$returnEdits === true) {`);
+  lines.push(`      throw new Error("$validateOnly and $returnEdits are mutually exclusive");`);
+  lines.push(`    }`);
+  lines.push(`    if (args.$validateOnly === true) {`);
+  lines.push(`      // run validation only; return { validationResult: "ok" | {errors} }`);
+  lines.push(`      return { validateOnly: true, ok: true /* or error array from validator */ };`);
+  lines.push(`    }`);
+  lines.push(`    if (args.$returnEdits === true) {`);
+  lines.push(`      // compute edits[] without committing; return { edits: [...] }`);
+  lines.push(`      return { returnEdits: true, edits: [] /* computed but not applied */ };`);
+  lines.push(`    }`);
+  lines.push("");
 
   // Actor identity for audit
   if (mutation.sideEffects && mutation.sideEffects.length > 0) {
@@ -165,9 +182,10 @@ function mutationToStub(
     const wrapped = param.required === false ? `v.optional(${validator})` : validator;
     argsLines.push(`    ${param.name}: ${wrapped},`);
   }
-  const argsCode = argsLines.length > 0
-    ? `  args: {\n${argsLines.join("\n")}\n  },`
-    : "  args: {},";
+  // OSDK 2.0 mutually-exclusive options
+  argsLines.push(`    $validateOnly: v.optional(v.literal(true)),`);
+  argsLines.push(`    $returnEdits:  v.optional(v.literal(true)),`);
+  const argsCode = `  args: {\n${argsLines.join("\n")}\n  },`;
 
   // Build handler
   const handlerBody = buildHandler(mutation, entities);

@@ -14,6 +14,8 @@
  *   type ObjectTypeRid = string & { __brand: "ObjectTypeRid" };
  *
  * This file is STABLE CONTRACT. Do not change without a migration plan.
+  * @owner palantirkc-ontology
+ * @purpose ObjectType primitive (prim-data-02)
  */
 
 export type ObjectTypeRid = string & { readonly __brand: "ObjectTypeRid" };

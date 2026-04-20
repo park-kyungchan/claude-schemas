@@ -6,6 +6,8 @@
  *
  * Authority: ~/.claude/schemas/ontology/types.ts (BasePropertyType, ValueConstraint)
  * Target:    convex/values (v.string(), v.number(), v.boolean(), v.union(), v.optional(), etc.)
+  * @owner palantirkc-ontology
+ * @purpose Ontology → Convex Type Mapping
  */
 
 import type { BasePropertyType, Property, ValueConstraint } from "../types";

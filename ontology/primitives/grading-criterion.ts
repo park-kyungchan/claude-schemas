@@ -1,0 +1,160 @@
+/**
+ * @stable — GradingCriterion primitive (prim-data-08, v1.14.0)
+ *
+ * Single rubric axis. Instances aggregate into a GradingRubric (composition
+ * pattern: rubric = ordered Set<GradingCriterion> with sum of weights = 1).
+ * Follows Palantir AIP Evals 5-evaluator taxonomy (code / rule / model /
+ * human / hybrid) — a generalization of Prithvi's 4-criteria rubric
+ * (Design / Originality / Craft / Functionality) which is recoverable as
+ * a frontend-domain rubric instance.
+ *
+ * Design rationale (user intent 2026-04-20):
+ *   "앞으로 palantir-mini Ontology 기반으로 수많은 프로젝트들을 생성할 것인데,
+ *    유지/보수/확장을 고려할 때 가장 좋은 판단을 해야한다. AIP Evals 패턴기반
+ *    으로 더 좋은 판단 해봐."
+ *   → Criterion primitive is the composable atom; rubrics are assembled
+ *     per-domain from criteria. Prithvi's 4 criteria are a frontend preset.
+ *     3D-scene/mathcrew gets its own 5-criteria preset. Ontology audit gets
+ *     its own. All share the same Criterion primitive structure.
+ *
+ * Authority:
+ *   - research/palantir-foundry/aip/aip-evals-*.md (10 docs, verbatim official)
+ *     in particular: aip-evals-create-suite.md, aip-evals-intermediate-
+ *     parameters.md, aip-evals-analyze-run-results.md
+ *   - research/palantir-vision/aipcon-devcon/aip-evals.md (interpretation
+ *     layer; 5-evaluator-type mapping to LEARN-02 in our ontology)
+ *
+ * D/L/A domain: DATA (declarative rubric spec — stored fact, not logic,
+ * not a mutation; composes into rubrics but each criterion is atomic data)
+ * @owner palantirkc-ontology
+ * @purpose AIP Evals-aligned grading criterion primitive
+ */
+
+export type GradingCriterionRid = string & { readonly __brand: "GradingCriterionRid" };
+
+export const gradingCriterionRid = (s: string): GradingCriterionRid =>
+  s as GradingCriterionRid;
+
+/**
+ * AIP Evals 5-evaluator taxonomy — core insight is that different criteria
+ * need different scoring mechanisms, and the primitive must support all.
+ *
+ *   code    — deterministic assertion (regex, shell exit code, HTTP status,
+ *             test runner pass/fail). Use validationExpression.
+ *   rule    — JSONSchema conformance, regex match against evidence text.
+ *             Use validationExpression.
+ *   model   — LLM judge with rubric prompt + expected structured output.
+ *             Use scoringPrompt.
+ *   human   — manual review marker; no automated score. Surfaces for user.
+ *             No expression needed.
+ *   hybrid  — composes ≥2 of above via subCriteriaRids + combinator logic.
+ */
+export type RubricDomain = "code" | "rule" | "model" | "human" | "hybrid";
+
+/**
+ * Applicability scope — limits where this criterion may be applied.
+ * Prevents applying a frontend design-quality rubric to a 3D scene or an
+ * ontology-audit. "any" opts out of scoping (use sparingly).
+ */
+export type CriterionApplicability =
+  | "frontend"
+  | "backend"
+  | "3d-scene"
+  | "ontology"
+  | "teaching"
+  | "cli"
+  | "api"
+  | "infrastructure"
+  | "any";
+
+export interface PassFailLogic {
+  /** Minimum score value for PASS (inclusive) */
+  readonly threshold: number;
+  /** Score scale */
+  readonly scale: "0-1" | "0-10" | "pass-fail";
+  /**
+   * For rubricDomain="hybrid": how sub-criterion scores combine.
+   *   min       — worst sub-score wins (strictest)
+   *   avg       — arithmetic mean
+   *   weighted  — use each sub's weightInRubric (weighted average)
+   *   all-pass  — all sub-criteria must PASS for PASS
+   */
+  readonly combinator?: "min" | "avg" | "weighted" | "all-pass";
+}
+
+export interface GradingCriterionDeclaration {
+  readonly criterionId: GradingCriterionRid;
+  readonly title: string;
+  readonly description: string;
+  readonly rubricDomain: RubricDomain;
+  readonly passFailLogic: PassFailLogic;
+  /**
+   * Relative weight within its parent rubric. Rubric-level invariant:
+   * sum of weights across criteria in a rubric = 1.0. Prithvi's frontend
+   * preset: Design 0.3 / Originality 0.2 / Craft 0.3 / Functionality 0.2.
+   */
+  readonly weightInRubric: number;
+  /**
+   * JSONSchema (JSON-serialized as string for RID-safety) describing what
+   * Evaluator must attach as evidence when scoring this criterion
+   * (screenshots, log excerpts, assertion outputs, stack traces, etc.).
+   */
+  readonly evidenceSchema: string;
+  /**
+   * For rubricDomain="model": LLM judge prompt template.
+   * Supports placeholders: {{artifact}}, {{spec}}, {{rubric}},
+   * {{evidence}}, {{scale}}. Output must match evidenceSchema.
+   */
+  readonly scoringPrompt?: string;
+  /**
+   * For rubricDomain="code" or "rule": deterministic expression.
+   *   code  — shell command, exit 0 = PASS, non-zero = FAIL (exit code
+   *           scaled to score via passFailLogic.scale)
+   *   rule  — regex pattern OR JSONSchema (detect via leading `^` vs `{`)
+   */
+  readonly validationExpression?: string;
+  /** Domain scope — criterion only applies when target is this domain */
+  readonly appliesToDomain: CriterionApplicability;
+  /**
+   * For rubricDomain="hybrid": ordered sub-criterion references. Each
+   * sub is another GradingCriterion; combinator drives resolution.
+   */
+  readonly subCriteriaRids?: readonly string[];
+  /**
+   * Optional provenance — cites AIP Evals or Prithvi original by URL/path.
+   * Surfaces in replay_lineage for rubric auditing.
+   */
+  readonly provenance?: string;
+}
+
+export class GradingCriterionRegistry {
+  private readonly items = new Map<GradingCriterionRid, GradingCriterionDeclaration>();
+
+  register(decl: GradingCriterionDeclaration): void {
+    this.items.set(decl.criterionId, decl);
+  }
+
+  get(rid: GradingCriterionRid): GradingCriterionDeclaration | undefined {
+    return this.items.get(rid);
+  }
+
+  byDomain(domain: CriterionApplicability): GradingCriterionDeclaration[] {
+    return [...this.items.values()].filter(
+      (c) => c.appliesToDomain === domain || c.appliesToDomain === "any",
+    );
+  }
+
+  byRubricDomain(rd: RubricDomain): GradingCriterionDeclaration[] {
+    return [...this.items.values()].filter((c) => c.rubricDomain === rd);
+  }
+
+  keys(): IterableIterator<GradingCriterionRid> {
+    return this.items.keys();
+  }
+
+  list(): GradingCriterionDeclaration[] {
+    return [...this.items.values()];
+  }
+}
+
+export const GRADING_CRITERION_REGISTRY = new GradingCriterionRegistry();

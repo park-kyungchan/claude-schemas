@@ -8,6 +8,8 @@
  *
  * ForwardPropagation:
  *   ontology/runtime.ts + ontology/frontend.ts → src/generated/ontology-registry.generated.ts
+  * @owner palantirkc-ontology
+ * @purpose Ontology → Frontend Registry Generator
  */
 
 interface StepDetailEvent {

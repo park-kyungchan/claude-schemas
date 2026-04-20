@@ -5,6 +5,8 @@
  * Branded for nominal type safety at zero runtime cost.
  *
  * PalantirFoundry-aligned set. Extend in v1 for domain-specific types.
+  * @owner palantirkc-ontology
+ * @purpose PropertyType primitive (prim-data-03)
  */
 
 export type PropertyTypeName =

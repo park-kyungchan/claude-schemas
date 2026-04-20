@@ -11,6 +11,8 @@
  *
  * Dry-run: prints generated code to stdout without writing files.
  * With --out: writes convex/schema.ts and convex/queries.ts.
+  * @owner palantirkc-ontology
+ * @purpose Ontology Codegen CLI
  */
 
 import { generateConvexSchema } from "./convex-schema-gen";
@@ -18,6 +20,8 @@ import { generateConvexQueries } from "./convex-queries-gen";
 import { generateConvexMutations } from "./convex-mutations-gen";
 import { generateRuntimeBindings } from "./runtime-bindings-gen";
 import { generateFrontendRegistry } from "./frontend-registry-gen";
+import { generatePmInstanceWrappers } from "./pm-instance-gen";
+import { generateTypedFunctions } from "./typed-functions-gen";
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 import { resolve, join, dirname } from "path";
 
@@ -83,6 +87,8 @@ async function main() {
     crossViewDependencies: (runtime as any).crossViewDependencies ?? [],
     frontendViews,
   }) : null;
+  const pmInstanceCode = generatePmInstanceWrappers({ data, logic: logic ?? undefined });
+  const typedFunctionsCode = logic ? generateTypedFunctions({ data, logic }) : null;
 
   if (dryRun || !outDir) {
     console.log("=== convex/schema.ts ===");
@@ -102,6 +108,12 @@ async function main() {
     if (registryCode) {
       console.log("\n=== src/generated/ontology-registry.generated.ts ===");
       console.log(registryCode);
+    }
+    console.log("\n=== src/generated/pm-instance.generated.ts ===");
+    console.log(pmInstanceCode);
+    if (typedFunctionsCode) {
+      console.log("\n=== src/generated/typed-functions.generated.ts ===");
+      console.log(typedFunctionsCode);
     }
     return;
   }
@@ -124,14 +136,28 @@ async function main() {
     console.log(`Written: ${mutationsStubPath} (stubs — merge manually)`);
   }
 
-  // Write frontend registry to src/generated/
+  // Write frontend registry + new Phase B1 generators to src/generated/
+  const projectRoot = dirname(dirname(projectPath));
+  const generatedDir = join(projectRoot, "src", "generated");
+  const needsGeneratedDir = registryCode || pmInstanceCode || typedFunctionsCode;
+  if (needsGeneratedDir && !existsSync(generatedDir)) mkdirSync(generatedDir, { recursive: true });
+
   if (registryCode) {
-    const projectRoot = dirname(dirname(projectPath)); // ontology/schema.ts → project root
-    const generatedDir = join(projectRoot, "src", "generated");
-    if (!existsSync(generatedDir)) mkdirSync(generatedDir, { recursive: true });
     const registryPath = join(generatedDir, "ontology-registry.generated.ts");
     writeFileSync(registryPath, registryCode, "utf-8");
     console.log(`Written: ${registryPath}`);
+  }
+
+  if (pmInstanceCode) {
+    const pmInstancePath = join(generatedDir, "pm-instance.generated.ts");
+    writeFileSync(pmInstancePath, pmInstanceCode, "utf-8");
+    console.log(`Written: ${pmInstancePath}`);
+  }
+
+  if (typedFunctionsCode) {
+    const typedFunctionsPath = join(generatedDir, "typed-functions.generated.ts");
+    writeFileSync(typedFunctionsPath, typedFunctionsCode, "utf-8");
+    console.log(`Written: ${typedFunctionsPath}`);
   }
 
   console.log("Codegen complete.");

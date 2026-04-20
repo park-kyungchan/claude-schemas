@@ -13,6 +13,8 @@
  *     and commits them atomically with submission criteria pre-flight.
  *
  * Tier-1 and Tier-2 are MUTUALLY EXCLUSIVE.
+  * @owner palantirkc-ontology
+ * @purpose ActionType primitive (prim-action-01, prim-action-02)
  */
 
 export type ActionTypeRid = string & { readonly __brand: "ActionTypeRid" };

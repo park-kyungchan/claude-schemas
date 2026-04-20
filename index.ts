@@ -25,3 +25,17 @@ export * from "./ontology/primitives/automation-declaration";
 export * from "./ontology/primitives/webhook-declaration";
 export * from "./ontology/primitives/scenario-sandbox";
 export * from "./ontology/primitives/aip-logic-function";
+
+// v1.13 governance primitives (A1.1 - A1.12)
+export * from "./ontology/primitives/research-document";
+export * from "./ontology/primitives/memory-index-entry";
+export * from "./ontology/primitives/claude-code-version";
+export * from "./ontology/primitives/hook-event-allowlist";
+export * from "./ontology/primitives/plugin-manifest";
+export * from "./ontology/primitives/project-schema-pin";
+export * from "./ontology/primitives/file-complexity-budget";
+export * from "./ontology/primitives/dead-code-marker";
+export * from "./ontology/primitives/lineage-conformance-policy";
+export * from "./ontology/primitives/managed-settings-fragment";
+export * from "./ontology/primitives/codegen-header-contract";
+export * from "./ontology/primitives/impact-edge";

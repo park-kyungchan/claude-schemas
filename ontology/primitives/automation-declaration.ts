@@ -11,6 +11,8 @@
  *
  * D/L/A domain: ACTION (automation drives mutations; the declaration itself is a
  * stored fact about scheduled mutations, owned by the action layer)
+  * @owner palantirkc-ontology
+ * @purpose @stable — AutomationDeclaration primitive (prim-action-03, v1.0)
  */
 
 export type AutomationRid = string & { readonly __brand: "AutomationRid" };

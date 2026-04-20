@@ -13,6 +13,8 @@
  * Authority chain: schemas/ontology/primitives/link-type.ts (this)
  *   -> palantir-mini/lib/codegen/descender-gen.ts
  *   -> <project>/src/generated/links.d.ts
+  * @owner palantirkc-ontology
+ * @purpose LinkType / Object-Backed LinkType primitive (prim-logic-03)
  */
 
 import type { ObjectTypeRid } from "./object-type";

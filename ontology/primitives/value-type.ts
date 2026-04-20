@@ -12,6 +12,8 @@
  *
  * D/L/A domain: DATA (scalar constraint; the constraint is a stored fact about
  * the data model, not a derivation or mutation)
+  * @owner palantirkc-ontology
+ * @purpose @stable — ValueType primitive (prim-data-06, v1.0)
  */
 
 export type ValueTypeRid = string & { readonly __brand: "ValueTypeRid" };

@@ -10,6 +10,8 @@
  *   → home-ontology/shared-core → per-project ontology/ → codegen
  *
  * D/L/A domain: DATA (stored-fact record type; no derived logic, no mutations)
+  * @owner palantirkc-ontology
+ * @purpose @stable — Struct primitive (prim-data-05, v1.0)
  */
 
 export type StructRid = string & { readonly __brand: "StructRid" };

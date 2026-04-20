@@ -9,6 +9,8 @@
  *
  * Authority chain:
  *   types.ts (ObjectType, Property) → type-mapping.ts → this file → convex/schema.ts
+  * @owner palantirkc-ontology
+ * @purpose Ontology → Convex Schema Generator
  */
 
 import type {

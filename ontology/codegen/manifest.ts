@@ -5,6 +5,8 @@
  * iterate this manifest instead of hardcoding generator module paths.
  *
  * Axis version: 1.12.0 (ontology)
+  * @owner palantirkc-ontology
+ * @purpose Ontology Codegen Manifest
  */
 
 export interface GeneratorSpec {
@@ -68,6 +70,24 @@ export const CODEGEN_MANIFEST: readonly GeneratorSpec[] = [
     exportName: "generateFrontendRegistry",
     inputs: ["runtime", "frontend"],
     outputPath: "src/generated/ontology-registry.generated.ts",
+    version: "1.0.0",
+  },
+  {
+    id: "pm-instance-wrapper",
+    description: "OSDK-2.0-style Pm.Instance<T> wrappers per ObjectType — $link/$as/$clone/$rid/$primaryKey namespace for compile-time link/action safety.",
+    module: "./pm-instance-gen",
+    exportName: "generatePmInstanceWrappers",
+    inputs: ["data", "logic"],
+    outputPath: "src/generated/pm-instance.generated.ts",
+    version: "1.0.0",
+  },
+  {
+    id: "typed-functions",
+    description: "Typed Function-interface contracts per ontology function — input/output types + toolExposure flag for LLM-safe dispatch.",
+    module: "./typed-functions-gen",
+    exportName: "generateTypedFunctions",
+    inputs: ["data", "logic"],
+    outputPath: "src/generated/typed-functions.generated.ts",
     version: "1.0.0",
   },
 ] as const;
